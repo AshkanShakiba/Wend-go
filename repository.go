@@ -8,7 +8,7 @@ var products []Product
 var orders []Order
 
 func insertProduct(name string, price int) {
-	product := Product{id: len(orders), name: name, price: price}
+	product := Product{id: len(products), name: name, price: price}
 	addProduct(product)
 }
 
