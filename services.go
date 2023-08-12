@@ -1,64 +1,29 @@
 package main
 
-import (
-	"github.com/labstack/echo"
-	"net/http"
-	"strconv"
-)
-
-func getProducts(c echo.Context) error {
+func getProductsService() []map[string]interface{} {
 	products := retrieveProducts()
-	return c.JSON(http.StatusOK, products)
+	return products
 }
 
-func getProduct(c echo.Context) error {
-	productId, err := strconv.Atoi(c.Param("product_id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "invalid parameter, product id must be an integer"})
-	}
+func getProductService(productId int) map[string]interface{} {
 	product := retrieveProduct(productId)
-	if product != nil {
-		return c.JSON(http.StatusOK, product)
-	} else {
-		return c.JSON(http.StatusNotFound, map[string]string{
-			"error": "product not found"})
-	}
+	return product
 }
 
-func getOrders(c echo.Context) error {
+func createProductService(name string, price int) {
+	insertProduct(name, price)
+}
+
+func getOrdersService() []map[string]interface{} {
 	orders := retrieveOrders()
-	return c.JSON(http.StatusOK, orders)
+	return orders
 }
 
-func getOrder(c echo.Context) error {
-	orderId, err := strconv.Atoi(c.Param("order_id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "invalid parameter, order id must be an integer"})
-	}
+func getOrderService(orderId int) map[string]interface{} {
 	order := retrieveOrder(orderId)
-	if order != nil {
-		return c.JSON(http.StatusOK, order)
-	} else {
-		return c.JSON(http.StatusNotFound, map[string]string{
-			"error": "order not found"})
-	}
+	return order
 }
 
-func createOrder(c echo.Context) error {
-	productId, err := strconv.Atoi(c.Param("product_id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "invalid parameter, product id must be an integer"})
-	}
-	product := retrieveProduct(productId)
-	if product != nil {
-		insertOrder(productId)
-		return c.JSON(http.StatusOK, map[string]string{
-			"message": "your order was placed"})
-	} else {
-		return c.JSON(http.StatusNotFound, map[string]string{
-			"error": "product not found"})
-	}
+func createOrderService(productId int) {
+	insertOrder(productId)
 }
